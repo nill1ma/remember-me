@@ -22,6 +22,13 @@ export default function History() {
                             <HistoryCard
                                 background={index % 2 === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.6)'}
                                 display={'1px' === open ? 'none' : 'flex'}>
+                                    <HistorySpan>
+                                    <HistorySpan color={'white'} weight={'bold'}>
+                                        Name:
+                                    </HistorySpan> <HistorySpan color={'white'} weight={'normal'}>
+                                        {i.name}
+                                    </HistorySpan>
+                                </HistorySpan>
                                 <HistorySpan>
                                     <HistorySpan color={'white'} weight={'bold'}>
                                         Date:

@@ -18,8 +18,6 @@ export default function Block() {
   const [totalTime, setTotalTime] = useState('')
   const [disabled, setDisabled] = useState(false)
 
-  var date = new Date()
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCountable({
@@ -40,15 +38,15 @@ export default function Block() {
   }, [countable])
 
   useEffect(() => {
-    if(listStore.every(l => l.show)){
+    if (listStore.every(l => l.show)) {
+      var date = new Date()
       let history = localStorage.getItem('history') ? Array.from(JSON.parse(localStorage.getItem('history'))) : []
-      history.push(
-        {
-          date: `${date.getUTCDate() < 10 ? '0' + date.getUTCDate() : date.getUTCDate()}/
-          ${date.getUTCMonth() < 10 ? '0'+(date.getUTCMonth() + 1) : date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
-          time: totalTime < 10 ? '0' + totalTime : totalTime
-        }
-      )
+      history[history.length - 1].name = history[history.length - 1].name
+      history[history.length - 1].date = `${date.getUTCDate() < 10 ? '0' + date.getUTCDate() : date.getUTCDate()}/
+          ${date.getUTCMonth() < 10 ? '0' + (date.getUTCMonth() + 1) : date.getUTCMonth() + 1}/${date.getUTCFullYear()}`
+      history[history.length - 1].time = totalTime < 10 ? '0' + totalTime : totalTime
+
+
       localStorage.setItem('history', JSON.stringify(history))
       console.log(JSON.parse(localStorage.getItem('history')))
     }
