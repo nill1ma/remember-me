@@ -4,7 +4,7 @@ export const Countable = styled.div`
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size:25px;
+  font-size:18px;
   font-weight:bold;
   width:80px;
   height:80px;

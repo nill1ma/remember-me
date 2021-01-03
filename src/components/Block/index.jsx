@@ -18,6 +18,8 @@ export default function Block() {
   const [totalTime, setTotalTime] = useState('')
   const [disabled, setDisabled] = useState(false)
 
+  var date = new Date()
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCountable({
@@ -32,8 +34,25 @@ export default function Block() {
 
   useEffect(() => {
     const is = listStore.every(l => l.show)
-    if (is && '' === totalTime) setTotalTime(`${countable.minute}:${countable.seconds}`)
+    if (is && '' === totalTime) {
+      setTotalTime(`${countable.minute}:${countable.seconds}`)
+    }
   }, [countable])
+
+  useEffect(() => {
+    if(listStore.every(l => l.show)){
+      let history = localStorage.getItem('history') ? Array.from(JSON.parse(localStorage.getItem('history'))) : []
+      history.push(
+        {
+          date: `${date.getUTCDate() < 10 ? '0' + date.getUTCDate() : date.getUTCDate()}/
+          ${date.getUTCMonth() < 10 ? '0'+(date.getUTCMonth() + 1) : date.getUTCMonth() + 1}/${date.getUTCFullYear()}`,
+          time: totalTime < 10 ? '0' + totalTime : totalTime
+        }
+      )
+      localStorage.setItem('history', JSON.stringify(history))
+      console.log(JSON.parse(localStorage.getItem('history')))
+    }
+  }, [totalTime])
 
   const handleMemory = (id) => {
     listStore.map((store) => {
