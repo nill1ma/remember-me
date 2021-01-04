@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { HomeButton, HomeContainer, HomeText, HomeTextInput } from './styles'
+import { HomeButton, HomeContainer, Logo, HomeTextInput } from './styles'
 import { useHistory } from 'react-router'
+
+import rememberme from '../../assets/rememberme.png'
 
 export default function Home() {
 
     const [name, setName] = useState('')
     const [send, setSend] = useState(false)
+    
     var redirect = useHistory()
 
     useEffect(() => {
@@ -25,9 +28,9 @@ export default function Home() {
 
     return (
         <HomeContainer>
-            <HomeText>Remember-me</HomeText>
+            <Logo src={rememberme}></Logo>
             <HomeTextInput onChange={(e) => setName(e.target.value)} placeholder={'Type a name of your preference'}></HomeTextInput>
-            <HomeButton onClick={() => setSend(true)}>ENTER</HomeButton>
+            <HomeButton disabled={'' === name ? true : false} onClick={() => setSend(true)}>ENTER</HomeButton>
         </HomeContainer>
     )
 }

@@ -1,11 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { HistoryContainer, Arrow, Icon, HistoryCotent, HistoryCard, HistorySpan } from './styles'
 
 export default function History() {
     const [open, setOpen] = useState('1px')
 
-    const [info, setInfo] = useState(localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')) : [])
+    const [info] = useState(localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')) : [])
+
+    useEffect(()=>{
+        order()
+    },[])
+
+    const order = () => {
+        info.sort((a,b)=>{
+            if(a.time.split(':')[0] !== b.time.split(':')[0]){
+                return a.time.split(':')[0] - b.time.split(':')[0]
+            }else{
+                return a.time.split(':')[1] - b.time.split(':')[1]
+            }
+        })
+    }
 
     return (
         <>

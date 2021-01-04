@@ -9,11 +9,10 @@ export const HomeContainer = styled.div`
     height:100vh;
     background: rgba(10, 10, 10, 0.8);
 `
-export const HomeText = styled.span`
-    color:rgba(255,140,0, 0.7);
-    font-size:30px;
-    font-weight:bold;
-    margin-bottom:20px;
+
+export const Logo = styled.img`
+    width:30vw;
+    height:30vh;
 `
 
 export const HomeTextInput = styled.input`

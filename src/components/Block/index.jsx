@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useHistory } from 'react-router'
 import { Body, Container, ContainerItem } from "./styles"
 import Timer from '../Timer'
 import Items from "./Items"
 import History from '../History'
-import { check } from '../../utils/functios'
+import { check, lesThenTen, saveHistory } from '../../utils/functios'
+
 
 export default function Block() {
+
+  var redirect = useHistory()
+
   const listStore = useSelector((state) => state.data)
   const dispatch = useDispatch()
   const [correct, setCorrect] = useState([])
@@ -17,8 +22,11 @@ export default function Block() {
 
   const [totalTime, setTotalTime] = useState('')
   const [disabled, setDisabled] = useState(false)
+  const [history] = useState(JSON.parse(localStorage.getItem('history')))
 
   useEffect(() => {
+    // let history = localStorage.getItem('history') ? Array.from(JSON.parse(localStorage.getItem('history'))) : []
+      if (!history || '' === history[history.length - 1].name) redirect.goBack()
     const interval = setInterval(() => {
       setCountable({
         minute: countable.seconds === 59 ? countable.minute += 1 : countable.minute,
@@ -33,28 +41,22 @@ export default function Block() {
   useEffect(() => {
     const is = listStore.every(l => l.show)
     if (is && '' === totalTime) {
-      setTotalTime(`${countable.minute}:${countable.seconds}`)
+      setTotalTime(`${lesThenTen(countable.minute)}:${lesThenTen(countable.seconds)}`)
     }
   }, [countable])
 
   useEffect(() => {
+
     if (listStore.every(l => l.show)) {
-      var date = new Date()
-      let history = localStorage.getItem('history') ? Array.from(JSON.parse(localStorage.getItem('history'))) : []
-      history[history.length - 1].name = history[history.length - 1].name
-      history[history.length - 1].date = `${date.getUTCDate() < 10 ? '0' + date.getUTCDate() : date.getUTCDate()}/
-          ${date.getUTCMonth() < 10 ? '0' + (date.getUTCMonth() + 1) : date.getUTCMonth() + 1}/${date.getUTCFullYear()}`
-      history[history.length - 1].time = totalTime < 10 ? '0' + totalTime : totalTime
-
-
-      localStorage.setItem('history', JSON.stringify(history))
-      console.log(JSON.parse(localStorage.getItem('history')))
+      // let history = localStorage.getItem('history') ? Array.from(JSON.parse(localStorage.getItem('history'))) : []
+      if ('' === history[history.length - 1].name) redirect.goBack()
+      saveHistory(history, totalTime)
     }
   }, [totalTime])
 
   const handleMemory = (id) => {
     listStore.map((store) => {
-      if (store.id === id) {
+      if (store.id === id && !store.show && !store.correct) {
         store.show = true
         correct.push(store.letter)
         setCorrect(correct)
