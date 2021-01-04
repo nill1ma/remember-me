@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from 'react-router'
-import { Body, Container, ContainerItem } from "./styles"
+import { check, lesThenTen, saveHistory } from '../../utils/functios'
+import History from '../History'
 import Timer from '../Timer'
 import Items from "./Items"
-import History from '../History'
-import { check, lesThenTen, saveHistory } from '../../utils/functios'
+import { Body, Container, ContainerItem } from "./styles"
 
 
 export default function Block() {
 
   var redirect = useHistory()
 
-  const listStore = useSelector((state) => state.data)
+  const listStore = useSelector((state) => state.listMemory.data)
   const dispatch = useDispatch()
   const [correct, setCorrect] = useState([])
   const [countable, setCountable] = useState({
@@ -25,8 +25,7 @@ export default function Block() {
   const [history] = useState(JSON.parse(localStorage.getItem('history')))
 
   useEffect(() => {
-    // let history = localStorage.getItem('history') ? Array.from(JSON.parse(localStorage.getItem('history'))) : []
-      if (!history || '' === history[history.length - 1].name) redirect.goBack()
+    if (!history || '' === history[history.length - 1].name) redirect.goBack()
     const interval = setInterval(() => {
       setCountable({
         minute: countable.seconds === 59 ? countable.minute += 1 : countable.minute,
@@ -48,9 +47,10 @@ export default function Block() {
   useEffect(() => {
 
     if (listStore.every(l => l.show)) {
-      // let history = localStorage.getItem('history') ? Array.from(JSON.parse(localStorage.getItem('history'))) : []
       if ('' === history[history.length - 1].name) redirect.goBack()
       saveHistory(history, totalTime)
+      dispatch({ type: "UPDATE_HISTORY", updated: JSON.parse(localStorage.getItem('history')) })
+
     }
   }, [totalTime])
 
@@ -70,7 +70,7 @@ export default function Block() {
         }
       }
     })
-    dispatch({ type: "UPDATE", updated: listStore })
+    dispatch({ type: "UPDATE_MEMORY", updated: listStore })
   }
 
   return (

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { HomeButton, HomeContainer, Logo, HomeTextInput } from './styles'
 import { useHistory } from 'react-router'
-
 import rememberme from '../../assets/rememberme.png'
+import { HomeButton, HomeContainer, HomeTextInput, Logo } from './styles'
+
 
 export default function Home() {
 

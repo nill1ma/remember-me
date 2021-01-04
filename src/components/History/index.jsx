@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from "react-redux"
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { HistoryContainer, Arrow, Icon, HistoryCotent, HistoryCard, HistorySpan } from './styles'
+import { Arrow, HistoryCard, HistoryContainer, HistoryCotent, HistorySpan, Icon } from './styles';
 
 export default function History() {
+    const listStore = useSelector((state) => state.listHistory.data)
     const [open, setOpen] = useState('1px')
 
-    const [info] = useState(localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')) : [])
-
-    useEffect(()=>{
+    useEffect(() => {
         order()
-    },[])
+    }, [])
 
     const order = () => {
-        info.sort((a,b)=>{
-            if(a.time.split(':')[0] !== b.time.split(':')[0]){
+        listStore.sort((a, b) => {
+            if (a.time.split(':')[0] !== b.time.split(':')[0]) {
                 return a.time.split(':')[0] - b.time.split(':')[0]
-            }else{
+            } else {
                 return a.time.split(':')[1] - b.time.split(':')[1]
             }
         })
@@ -31,12 +31,12 @@ export default function History() {
                         icon={'1px' === open ? faEye : faEyeSlash} />
                 </Arrow>
                 <HistoryCotent width={open}>
-                    {Array.from(info).map((i, index) => {
+                    {Array.from(listStore).map((i, index) => {
                         return (
                             <HistoryCard
                                 background={index % 2 === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.6)'}
                                 display={'1px' === open ? 'none' : 'flex'}>
-                                    <HistorySpan>
+                                <HistorySpan>
                                     <HistorySpan color={'white'} weight={'bold'}>
                                         Name:
                                     </HistorySpan> <HistorySpan color={'white'} weight={'normal'}>
