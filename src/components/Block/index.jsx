@@ -48,8 +48,7 @@ export default function Block() {
 
     if (listStore.every(l => l.show)) {
       if ('' === history[history.length - 1].name) redirect.goBack()
-      saveHistory(history, totalTime)
-      dispatch({ type: "UPDATE_HISTORY", updated: JSON.parse(localStorage.getItem('history')) })
+      dispatch({ type: "UPDATE_HISTORY", updated: saveHistory(history, totalTime) })
 
     }
   }, [totalTime])

@@ -12,8 +12,9 @@ export const Arrow = styled.div`
 `
 
 export const Icon = styled(FontAwesomeIcon)`
+    display:flex;
     color:rgba(255,140,0, 0.7);
-    margin-right:5px;
+    margin-right:${props => props.margin};
 `
 export const HistoryContainer = styled.div`
     display:flex;
@@ -47,16 +48,25 @@ export const HistoryCard = styled.div`
     width:95%;
     padding:5px;
     margin-top:5px;
-    display:${props=>props.display};
+    display:${props => props.display};
+    justify-content:space-between;
+    align-items:center;
     border-bottom:1px solid rgba(255,255,255, 0.3);
+    background:${props => props.background};
+    transition:5s;
+`
+
+export const HistoryCardInfo = styled.div`
+    width:50%;
+    margin-top:5px;
+    display:${props => props.display};
     flex-direction:column;
     align-items:flex-start;
-    background:${props => props.background};
     transition:5s;
 `
 
 export const HistorySpan = styled.span`
     color:${props => props.color};
-    font-weight:${props=>props.weight};
+    font-weight:${props => props.weight};
     font-size:10px;
 `

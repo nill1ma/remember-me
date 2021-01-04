@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux"
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { Arrow, HistoryCard, HistoryContainer, HistoryCotent, HistorySpan, Icon } from './styles';
+import { faEye, faEyeSlash, faMedal } from "@fortawesome/free-solid-svg-icons";
+import { Arrow, HistoryCard, HistoryCardInfo, HistoryContainer, HistoryCotent, HistorySpan, Icon } from './styles';
 
 export default function History() {
     const listStore = useSelector((state) => state.listHistory.data)
@@ -28,35 +28,40 @@ export default function History() {
                     <Icon
                         onClick={() => '1px' === open
                             ? setOpen('200px') : setOpen('1px')}
-                        icon={'1px' === open ? faEye : faEyeSlash} />
+                        icon={'1px' === open ? faEye : faEyeSlash} margin={'5px'} />
                 </Arrow>
                 <HistoryCotent width={open}>
-                    {Array.from(listStore).map((i, index) => {
+                    {listStore.map((i, index) => {
                         return (
                             <HistoryCard
                                 background={index % 2 === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.6)'}
                                 display={'1px' === open ? 'none' : 'flex'}>
-                                <HistorySpan>
-                                    <HistorySpan color={'white'} weight={'bold'}>
-                                        Name:
+                                <HistoryCardInfo display={'1px' === open ? 'none' : 'flex'}>
+                                    <HistorySpan>
+                                        <HistorySpan color={'white'} weight={'bold'}>
+                                            Name:
                                     </HistorySpan> <HistorySpan color={'white'} weight={'normal'}>
-                                        {i.name}
+                                            {i.name}
+                                        </HistorySpan>
                                     </HistorySpan>
-                                </HistorySpan>
-                                <HistorySpan>
-                                    <HistorySpan color={'white'} weight={'bold'}>
-                                        Date:
+                                    <HistorySpan>
+                                        <HistorySpan color={'white'} weight={'bold'}>
+                                            Date:
                                     </HistorySpan> <HistorySpan color={'white'} weight={'normal'}>
-                                        {i.date}
+                                            {i.date}
+                                        </HistorySpan>
                                     </HistorySpan>
-                                </HistorySpan>
-                                <HistorySpan>
-                                    <HistorySpan color={'white'} weight={'bold'}>
-                                        Time:
+                                    <HistorySpan>
+                                        <HistorySpan color={'white'} weight={'bold'}>
+                                            Time:
                                     </HistorySpan> <HistorySpan color={'white'} weight={'normal'}>
-                                        {i.time}
+                                            {i.time}
+                                        </HistorySpan>
                                     </HistorySpan>
-                                </HistorySpan>
+                                </HistoryCardInfo>
+                                {0 === index ?
+                                    <Icon icon={faMedal} /> : <></>
+                                }
                             </HistoryCard>
                         )
                     })}

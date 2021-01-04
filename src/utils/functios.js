@@ -31,4 +31,5 @@ export function saveHistory(history, totalTime) {
             : date.getUTCMonth() + 1}/${date.getUTCFullYear()}`
     history[history.length - 1].time = totalTime
     localStorage.setItem('history', JSON.stringify(history))
+    return Array.from(JSON.parse(localStorage.getItem('history')))
 }
