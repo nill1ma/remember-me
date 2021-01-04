@@ -22,7 +22,7 @@ export default function Block() {
 
   const [totalTime, setTotalTime] = useState('')
   const [disabled, setDisabled] = useState(false)
-  const [history] = useState(JSON.parse(localStorage.getItem('history')))
+  const [history] = useState(Array.from(JSON.parse(localStorage.getItem('history'))))
 
   useEffect(() => {
     if (!history || '' === history[history.length - 1].name) redirect.goBack()
