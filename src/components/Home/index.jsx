@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import rememberme from '../../assets/rememberme.png'
 import { HomeButton, HomeContainer, HomeTextInput, Logo } from './styles'
@@ -8,12 +9,13 @@ export default function Home() {
 
     const [name, setName] = useState('')
     const [send, setSend] = useState(false)
-    
+    const dispatch = useDispatch()
     var redirect = useHistory()
 
     useEffect(() => {
         if (send) {
             let history = localStorage.getItem('history') ? Array.from(JSON.parse(localStorage.getItem('history'))) : []
+            
             history.push(
                 {
                     name: name,
@@ -22,6 +24,7 @@ export default function Home() {
                 }
             )
             localStorage.setItem('history', JSON.stringify(history))
+            dispatch({type:'UPDATE_HISTORY', updated:history})
             redirect.push('/game')
         }
     }, [send])

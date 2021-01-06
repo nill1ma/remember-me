@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux"
-import { faEye, faEyeSlash, faMedal } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faMedal, faUndoAlt } from "@fortawesome/free-solid-svg-icons";
 import { Arrow, HistoryCard, HistoryCardInfo, HistoryContainer, HistoryCotent, HistorySpan, Icon } from './styles';
 
-export default function History() {
-    const listStore = useSelector((state) => state.listHistory.data)
+export default function History(props) {
+    const listStoreHistory = useSelector((state) => state.listHistory.data)
     const [open, setOpen] = useState('1px')
 
     useEffect(() => {
@@ -12,7 +12,7 @@ export default function History() {
     }, [])
 
     const order = () => {
-        listStore.sort((a, b) => {
+        listStoreHistory.sort((a, b) => {
             if (a.time.split(':')[0] !== b.time.split(':')[0]) {
                 return a.time.split(':')[0] - b.time.split(':')[0]
             } else {
@@ -25,13 +25,16 @@ export default function History() {
         <>
             <HistoryContainer>
                 <Arrow>
+                    <Icon onClick={() => props.refresh()} margin={'10px'} top={'20px'} size={'lg'} self={'flex-start'} icon={faUndoAlt} />
                     <Icon
+                        size={'lg'}
+                        self={'center'}
                         onClick={() => '1px' === open
                             ? setOpen('200px') : setOpen('1px')}
-                        icon={'1px' === open ? faEye : faEyeSlash} margin={'5px'} />
+                        icon={'1px' === open ? faEye : faEyeSlash} margin={'5px'} top={'20px'} />
                 </Arrow>
                 <HistoryCotent width={open}>
-                    {listStore.map((i, index) => {
+                    {listStoreHistory.map((i, index) => {
                         return (
                             <HistoryCard
                                 background={index % 2 === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.6)'}

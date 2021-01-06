@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+
+
 export const Arrow = styled.div`
+    height:100vh;
     display:flex;
-    justify-content:center;
-    align-items:center;
     align-self:center;
     padding:0;
     margin:0;
@@ -14,6 +15,7 @@ export const Arrow = styled.div`
 export const Icon = styled(FontAwesomeIcon)`
     display:flex;
     color:rgba(255,140,0, 0.7);
+    margin-top:${props=>props.top};
     margin-right:${props => props.margin};
 `
 export const HistoryContainer = styled.div`

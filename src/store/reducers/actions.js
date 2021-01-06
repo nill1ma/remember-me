@@ -4,6 +4,9 @@ const actions = {
     }),
     updateHistory: () => ({
         type: 'UPDATE_HISTORY '
+    }),
+    updateClock: () => ({
+        type: 'UPDATE_CLOCK '
     })
 }
 

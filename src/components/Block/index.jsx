@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from 'react-router'
-import { check, lesThenTen, saveHistory } from '../../utils/functios'
+import { check, lessThanTen, saveHistory, refresher } from '../../utils/functios'
 import History from '../History'
 import Timer from '../Timer'
 import Items from "./Items"
@@ -12,44 +12,38 @@ export default function Block() {
 
   var redirect = useHistory()
 
-  const listStore = useSelector((state) => state.listMemory.data)
-  const dispatch = useDispatch()
-  const [correct, setCorrect] = useState([])
-  const [countable, setCountable] = useState({
-    minute: 0,
-    seconds: 0
-  })
-
   const [totalTime, setTotalTime] = useState('')
   const [disabled, setDisabled] = useState(false)
-  const [history] = useState(Array.from(JSON.parse(localStorage.getItem('history'))))
+  const history = useSelector(state => state.listHistory.data)
+  const refreshed = useSelector(state => state.refresh.data)
+
+  const listStore = useSelector((state) => state.listMemory.data)
+  const countable = useSelector((state) => state.clock.data)
+  const dispatch = useDispatch()
+  const [correct, setCorrect] = useState([])
+
 
   useEffect(() => {
-    if (!history || '' === history[history.length - 1].name) redirect.goBack()
-    const interval = setInterval(() => {
-      setCountable({
-        minute: countable.seconds === 59 ? countable.minute += 1 : countable.minute,
-        seconds: countable.seconds < 59 ? countable.seconds += 1 : countable.seconds -= 59
-      })
-    }, 1000);
-
-    return () => clearInterval(interval)
+    dispatch({ type: 'UPDATE_REFRESH', updated: false })
+    if (!(history || '' === history[history.length - 1].name) && refreshed) { redirect.goBack() }
+    else {
+      let h = Array.from(JSON.parse(localStorage.getItem('history')))
+      dispatch({ type: "UPDATE_HISTORY", updated: saveHistory(h, totalTime) })
+    }
   }, [])
 
 
   useEffect(() => {
     const is = listStore.every(l => l.show)
     if (is && '' === totalTime) {
-      setTotalTime(`${lesThenTen(countable.minute)}:${lesThenTen(countable.seconds)}`)
+      setTotalTime(`${lessThanTen(countable.minute)}:${lessThanTen(countable.seconds)}`)
     }
   }, [countable])
 
   useEffect(() => {
-
     if (listStore.every(l => l.show)) {
       if ('' === history[history.length - 1].name) redirect.goBack()
       dispatch({ type: "UPDATE_HISTORY", updated: saveHistory(history, totalTime) })
-
     }
   }, [totalTime])
 
@@ -72,15 +66,31 @@ export default function Block() {
     dispatch({ type: "UPDATE_MEMORY", updated: listStore })
   }
 
+  const refresh = () => {
+    dispatch({ type: 'UPDATE_REFRESH', updated: true })
+    if (totalTime !== '') {
+      let l = history
+      l.push(
+        {
+          name: history[history.length - 1].name,
+          date: '',
+          time: ''
+        }
+      )
+      localStorage.setItem('history', JSON.stringify(l))
+      dispatch({ type: 'UPDATE_MEMORY', updated: l })
+    }
+  }
+
   return (
     <Body>
       <Container>
-        <Timer countable={countable} totalTime={totalTime} />
+        <Timer refreshed={refreshed} countable={countable} totalTime={totalTime} />
         <ContainerItem>
           <Items list={listStore} disabled={disabled} handleMemory={handleMemory} />
         </ContainerItem>
       </Container>
-      <History />
+      <History refresh={refresh} />
     </Body >
   )
 }

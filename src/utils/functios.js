@@ -12,13 +12,21 @@ function clear(listStore) {
     })
 }
 
+export function refresher(listStore) {
+    listStore.map((store) => {
+        store.show = false
+        store.correct = false
+    })
+    return listStore.sort(() => .5 - Math.random())
+}
+
 function shown(listStore, letter) {
     listStore.map((store) => {
         if (letter === store.letter) store.correct = true
     })
 }
 
-export function lesThenTen(value) {
+export function lessThanTen(value) {
     return value < 10 ? `0${value}` : value
 }
 
